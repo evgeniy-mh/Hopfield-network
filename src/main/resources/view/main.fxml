@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.evgeniymh.simplehopfieldnetwork.MainController">
+  <children>
+    <Label text="Pattern:" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+    <HBox maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0">
+      <children>
+        <Button fx:id="trainButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Train" HBox.hgrow="ALWAYS" />
+        <Button id="trainButton" fx:id="goButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Go" HBox.hgrow="ALWAYS" />
+        <Button id="clearButtom" fx:id="clearButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Clear" HBox.hgrow="ALWAYS" />
+      </children>
+    </HBox>
+    <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="25.0">
+      <content>
+        <AnchorPane fx:id="DrawSpace" prefHeight="-1.0" prefWidth="-1.0">
+          <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+          </padding>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+  </children>
+</AnchorPane>
