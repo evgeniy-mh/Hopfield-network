@@ -9,9 +9,13 @@ import com.evgeniymh.simplehopfieldnetwork.neural.HopfieldNetwork;
 import com.evgeniymh.simplehopfieldnetwork.neural.NeuralNetworkError;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -29,6 +33,7 @@ public class MainController {
     private Rectangle[][] drawMatrix;
     private boolean[][] boolMatrix;
     private HopfieldNetwork mHopfieldNetwork;
+    private Group drawContainer = new Group();
 
     @FXML
     AnchorPane DrawSpace;
@@ -38,10 +43,14 @@ public class MainController {
     Button trainButton;
     @FXML
     Button goButton;
+    @FXML
+    Spinner<Integer> DrawSpaceMSpinner;
+    @FXML
+    Spinner<Integer> DrawSpaceNSpinner;
     
-    public void setMatrixDim(int matrM, int matrN) {
-        this.matrM = matrM;
-        this.matrN = matrN;
+    public void initMatrix(){
+        this.matrM = DrawSpaceMSpinner.getValue();
+        this.matrN = DrawSpaceNSpinner.getValue();
 
         drawMatrix = new Rectangle[matrM][matrN];
         boolMatrix = new boolean[matrM][matrN];
@@ -49,7 +58,23 @@ public class MainController {
     }
 
     @FXML
-    public void initialize() {   
+    public void initialize() {  
+        
+        DrawSpace.getChildren().add(drawContainer);
+        
+        SpinnerValueFactory<Integer> valueFactoryM=new SpinnerValueFactory.IntegerSpinnerValueFactory(3, 15, 6);
+        SpinnerValueFactory<Integer> valueFactoryN=new SpinnerValueFactory.IntegerSpinnerValueFactory(3, 15, 6);
+        DrawSpaceMSpinner.setValueFactory(valueFactoryM);
+        DrawSpaceNSpinner.setValueFactory( valueFactoryN);
+        
+        ChangeListener<Integer> spinnerListener=(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) -> {            
+            drawContainer.getChildren().clear();
+            initMatrix();
+            Draw();
+        };
+        DrawSpaceMSpinner.valueProperty().addListener(spinnerListener);
+        DrawSpaceNSpinner.valueProperty().addListener(spinnerListener);
+        
         trainButton.setOnAction((event) -> {
             try {
                 mHopfieldNetwork.train(getPattern());
@@ -64,7 +89,7 @@ public class MainController {
         });
         
         clearButton.setOnAction((event) -> {
-            for (int i = 0; i < matrN; i++) {
+            for (int i = 0; i < matrM; i++) {
                 for (int j = 0; j < matrN; j++) {
                     drawMatrix[i][j].setFill(Color.LIGHTSTEELBLUE);
                     boolMatrix[i][j] = false;
@@ -74,15 +99,13 @@ public class MainController {
         });
     }    
 
-    public void Draw() {
-        Group drawContainer = new Group();
-        DrawSpace.getChildren().add(drawContainer);
+    public void Draw() {     
         drawMatrix(drawContainer, matrM, matrN);
 
     }
     
     private void showPattern(boolean[] pattern){
-        for (int i = 0, ind = 0; i < matrN; i++) {
+        for (int i = 0, ind = 0; i < matrM; i++) {
             for (int j = 0; j < matrN; j++) {
                 boolMatrix[i][j]=pattern[ind];
                 drawMatrix[i][j].setFill(pattern[ind]? Color.BLACK : Color.LIGHTSTEELBLUE);
@@ -94,7 +117,7 @@ public class MainController {
     
     private boolean[] getPattern() {
         boolean[] pattern = new boolean[matrM * matrN];
-        for (int i = 0, ind = 0; i < matrN; i++) {
+        for (int i = 0, ind = 0; i < matrM; i++) {
             for (int j = 0; j < matrN; j++) {
                 pattern[ind++] = boolMatrix[i][j];
             }
@@ -124,7 +147,8 @@ public class MainController {
                         drawMatrix[fi][fj].setFill(Color.LIGHTSTEELBLUE);
                         boolMatrix[fi][fj] = false;
                     }
-                });
+                });                
+                
                 gr.getChildren().add(drawMatrix[i][j]);
             }
         }

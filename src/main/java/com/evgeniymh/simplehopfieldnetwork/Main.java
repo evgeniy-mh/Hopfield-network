@@ -29,9 +29,9 @@ public class Main extends Application {
         AnchorPane rootOverview = (AnchorPane) loader.load();
         
         MainController mc = loader.getController();
-        mc.setMatrixDim(6, 6);
+        mc.initMatrix();
 
-        Scene scene = new Scene(rootOverview,350,350);
+        Scene scene = new Scene(rootOverview,450,450);
         stage.setTitle("Simple Hopfield Network");
         stage.setScene(scene);
         stage.show();
